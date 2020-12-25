@@ -7,9 +7,8 @@
 
 ## Setup and Run
 
-1. Clone repo
-2. `npm i`
-3. Clone `cp .env.example .env`
-4. Setup a twilio account
-5. Update ENV variables
-6. `npm run dev`
+1. `npm i`
+1. Clone `cp .env.example .env`
+1. Setup a twilio account
+1. Update ENV variables
+1. `npm run dev`

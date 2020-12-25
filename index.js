@@ -11,7 +11,7 @@ const bot = {
 	hasError: false
 }
 
-const job = new CronJob('* * * * * *', async () => {
+const job = new CronJob('1 * * * * *', async () => {
 
 	try {
 

@@ -1,3 +1,7 @@
+const {
+    SCRAPE_FIND_TEXT,
+    SCRAPE_URL
+} = process.env
 const puppeteer = require('puppeteer')
 const sms = require('./sms');
 
@@ -14,11 +18,11 @@ module.exports = {
                 height: 1080
             })
             console.log('Bot:: New page.')
-            console.log('Bot:: Going to URL...', process.env.SCRAPE_URL)
+            console.log('Bot:: Going to URL...', SCRAPE_URL)
 
             // handle page load errors gracefully
             try {
-                await page.goto(process.env.SCRAPE_URL)
+                await page.goto(SCRAPE_URL)
                 console.log('Bot:: Page loaded.')
             } catch (error) {
                 console.log('Bot:: Failed to load webpage.')
@@ -26,15 +30,15 @@ module.exports = {
                 console.log('Bot:: Browser closed.')
                 return false
             }
-            
+
             let isAvailableToBuy = false
             try {
                 // find "buy now" text on the page
-                console.log('Bot:: Searching page for...', process.env.SCRAPE_FIND_TEXT)
+                console.log('Bot:: Searching page for...', SCRAPE_FIND_TEXT)
                 isAvailableToBuy = await page.waitForFunction(
-                    `() => document.querySelector('.product-details').innerText.includes(${process.env.SCRAPE_FIND_TEXT})`,
+                    text => document.querySelector('.product-details').innerText.includes(text),
                     {},
-                    null,
+                    SCRAPE_FIND_TEXT,
                 );
             } catch (error) {
                 isAvailableToBuy = false

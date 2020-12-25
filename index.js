@@ -11,8 +11,7 @@ const bot = {
 	hasError: false
 }
 
-const job = new CronJob('1 * * * * *', async () => {
-	console.log('Cron:: Job start.')
+const job = new CronJob('* * * * * *', async () => {
 
 	try {
 
@@ -47,17 +46,18 @@ const job = new CronJob('1 * * * * *', async () => {
 		// keep track of when the bot last ran
 		bot.lastRun = Date.now()
 		bot.isRunning = false
+		console.log('Cron:: Job end.')
+		console.log('')
+		console.log('')
 
 	} catch (error) {
 		console.log('Cron:: Error with bot.', { error })
+		console.log('')
+		console.log('')
 		sms.send('Error with bot.')
 		bot.isRunning = false
 		bot.hasError = error
 		
-	} finally {
-		console.log('Cron:: Job end.')
-		console.log('')
-		console.log('')
 	}
 });
 

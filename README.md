@@ -3,6 +3,7 @@
 > Using Twilio and Puppeteer, send me a text message when a "BUY NOW" button appears on the page.
 
 * Will send a text if there is an error.
+* Will send a text if available.
 * Will send a text if it was available and is no longer.
 * Creates a screenshot called `UNAVAILABLE_{datetime}.png` if not available. May want to tone this down...
 * Creates a screenshot called `_AVAILABLE_{datetime}.png` if it is available.

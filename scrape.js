@@ -1,6 +1,7 @@
 const {
     SCRAPE_FIND_TEXT,
-    SCRAPE_URL
+    SCRAPE_URL,
+    SCRAPE_DOM_SELECTOR
 } = process.env
 const puppeteer = require('puppeteer')
 
@@ -11,11 +12,11 @@ module.exports = {
      * return `null` = couldn't determine
      */
     checkForBuyButton: async () => {
-        try {
+        // launch browser
+        const browser = await puppeteer.launch()
+        console.log('Bot:: Launched browser.')
 
-            // launch browser
-            const browser = await puppeteer.launch()
-            console.log('Bot:: Launched browser.')
+        try {
 
             // new tab
             const page = await browser.newPage()
@@ -42,16 +43,19 @@ module.exports = {
             let isAvailableToBuy = false
             try {
                 // find "buy now" text on the page
-                console.log('Bot:: Searching page for...', SCRAPE_FIND_TEXT)
+                console.log('Bot:: Searching page for...', SCRAPE_FIND_TEXT, SCRAPE_DOM_SELECTOR)
                 // run the following function in the browser
                 isAvailableToBuy = await page.waitForFunction(
                     // only search a specific portion of the page for text
-                    text => document.querySelector().innerText.includes(text),
+                    obj => document.querySelector(obj.dom).innerText.includes(obj.text),
                     {},
-                    SCRAPE_FIND_TEXT,
+                    {
+                        dom: SCRAPE_DOM_SELECTOR,
+                        text: SCRAPE_FIND_TEXT
+                    },
                 );
             } catch (error) {
-                return null
+                isAvailableToBuy = null
             }
             console.log('Bot:: Available to buy...', !!isAvailableToBuy)
 
@@ -68,6 +72,7 @@ module.exports = {
             return isAvailableToBuy
             
         } catch (error) {
+            await browser.close();
             throw error
         }
     }

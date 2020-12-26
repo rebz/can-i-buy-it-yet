@@ -38,26 +38,31 @@ const job = new CronJob('1 * * * * *', async () => {
 		const isAvailable = await scrape.checkForBuyButton()
 
 		// if it was available but is no longer, send a text message
-		if (bot.wasAvailable && !bot.isAvailable) {
-			sms.send('You missed your shot. No longer available... womp womp.')
+		if (bot.wasAvailable && !isAvailable) {
+			await sms.send('You missed your shot. No longer available... womp womp.')
 		}
+
+		// if now available, send a text message
+		if (isAvailable && !bot.wasAvailable) {
+			await sms.send('Available to buy.')
+		}
+
 		bot.wasAvailable = isAvailable
 		
 		// keep track of when the bot last ran
 		bot.lastRun = Date.now()
 		bot.isRunning = false
-		console.log('Cron:: Job end.')
+		console.log('Cron:: Bot end.')
 		console.log('')
 		console.log('')
 
 	} catch (error) {
+		sms.send('Error with bot.')
 		console.log('Cron:: Error with bot.', { error })
 		console.log('')
 		console.log('')
-		sms.send('Error with bot.')
 		bot.isRunning = false
 		bot.hasError = error
-		
 	}
 });
 
